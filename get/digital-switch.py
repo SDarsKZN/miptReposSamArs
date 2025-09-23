@@ -4,6 +4,7 @@ GPIO.setmode(GPIO.BCM)
 led = 26
 GPIO.setup(led, GPIO.OUT)
 state = 0
+period=1.0
 button = 13
 GPIO.setup(button, GPIO.IN)
 while True:
