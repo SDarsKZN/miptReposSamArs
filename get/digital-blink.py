@@ -8,4 +8,4 @@ period=1.0
 while True:
     GPIO.output(led, state)
     state = not state
-    time.sleep(period)
+    time.sleep(period/2)
