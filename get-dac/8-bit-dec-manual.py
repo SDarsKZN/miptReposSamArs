@@ -1,8 +1,8 @@
 import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BCM)
-pins = [16, 20, 21, 25, 26, 17, 27, 22]
-GPIO.setup(pins, GPIO.OUT)
-GPIO.output(pins, 0)
+gpio_bits = [16, 20, 21, 25, 26, 17, 27, 22]
+GPIO.setup(gpio_bits, GPIO.OUT)
+GPIO.output(gpio_bits, 0)
 dynamic_range = 3.3
 def voltage_to_number(voltage):
     if not (0.0 <= voltage <= dynamic_range):
@@ -16,9 +16,9 @@ def number_to_dac(value):
 for i in range(8):
     print(number_to_dac(i))
     if number_to_dac(i) == 1:
-        GPIO.output(pins[i], 1)
+        GPIO.output(gpio_bits[i], 1)
     else:
-        GPIO.output(pins[i], 0)
+        GPIO.output(gpio_bits[i], 0)
 
 try:
     while True:
@@ -32,14 +32,14 @@ try:
 
             for i in range(8):
                 if mass[i] == 1:
-                    GPIO.output(pins[i], 1)
+                    GPIO.output(gpio_bits[i], 1)
                 else:
-                    GPIO.output(pins[i], 0)
+                    GPIO.output(gpio_bits[i], 0)
 
 
 
         except ValueError:
             print("Вы ввели не то число. Попробуйте ещё раз\n")
 finally:
-    GPIO.output(pins, 0)
+    GPIO.output(gpio_bits, 0)
     GPIO.cleanup()
