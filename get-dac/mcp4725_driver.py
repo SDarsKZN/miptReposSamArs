@@ -42,6 +42,8 @@ if __name__ == "__main__":
         while True:
             try:
                 voltage = float(input("Введите напряжение в вольтах: "))
+
+                print("Для остановки нажмите Ctrl+C")
             except ValueError:
                 print("incorrect input\n")
     finally:

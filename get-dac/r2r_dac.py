@@ -36,6 +36,7 @@ if __name__ == "__main__":
             try:
                 voltage = float(input("Введите напряжение в вольтах: "))
                 dac.set_voltage(voltage)
+                print("Для остановки нажмите Ctrl+C")
 
             except ValueError:
                 print("Вы ввели не то число. Попробуйте ещё раз\n")
