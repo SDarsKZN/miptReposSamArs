@@ -1,4 +1,4 @@
-import numpy
+#import numpy
 import time
 import r2r_dac as r2r
 import math
@@ -45,7 +45,7 @@ if __name__ == "__main__":
             verbose=True
         )
 
-        SIGNAL_FREQUENCY = 1.0   
+        SIGNAL_FREQUENCY = 10
         AMPLITUDE = 1.7       
         SAMPLING_FREQUENCY = 100000
         

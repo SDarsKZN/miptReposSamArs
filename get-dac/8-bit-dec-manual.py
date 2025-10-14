@@ -29,6 +29,7 @@ try:
             mass = number_to_dac(number)
             
             print(mass)
+            print("Для остановки нажмите Ctrl+C")
 
             for i in range(8):
                 if mass[i] == 1:
