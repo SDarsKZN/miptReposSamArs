@@ -107,9 +107,4 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"Произошла ошибка: {e}")
     finally:
-        # Вызываем «деструктор» объекта класса управления R2R-ЦАП
-        try:
-            dac.deinit()
-            print("ЦАП успешно отключен")
-        except:
-            print("Ошибка при отключении ЦАП")
+        dac.deinit()
