@@ -26,7 +26,6 @@ def main():
         print(f"  Амплитуда: {AMPLITUDE} В")
         print(f"  Частота дискретизации: {SAMPLING_FREQUENCY} Гц")
         print(f"  Динамический диапазон: {DYNAMIC_RANGE} В")
-        print(f"  Адрес I2C: 0x61")
         print("Для остановки нажмите Ctrl+C")
         
         start_time = time.time()
@@ -50,13 +49,8 @@ def main():
             
     except KeyboardInterrupt:
         print("\nГенерация сигнала остановлена пользователем")
-    except Exception as e:
-        print(f"Произошла ошибка: {e}")
-    finally:
-        # Вызываем «деструктор» объекта класса управления микросхемой MCP4725
-        if dac is not None:
-            dac.deinit()
-            print("MCP4725 успешно отключен")
+    
+    
 
 # Альтернативная версия с использованием функции generate_signal из signal_generator
 def main_with_generate_signal():
@@ -77,7 +71,6 @@ def main_with_generate_signal():
         print(f"  Амплитуда: {AMPLITUDE} В")
         print(f"  Частота дискретизации: {SAMPLING_FREQUENCY} Гц")
         print(f"  Динамический диапазон: {DYNAMIC_RANGE} В")
-        print(f"  Адрес I2C: 0x61")
         print("Для остановки нажмите Ctrl+C")
         
         # Используем функцию generate_signal из модуля signal_generator
@@ -91,13 +84,13 @@ def main_with_generate_signal():
             
     except KeyboardInterrupt:
         print("\nГенерация сигнала остановлена пользователем")
-    except Exception as e:
+    """except Exception as e:
         print(f"Произошла ошибка: {e}")
     finally:
         # Вызываем «деструктор» объекта класса управления микросхемой MCP4725
         if dac is not None:
             dac.deinit()
-            print("MCP4725 успешно отключен")
+            print("MCP4725 успешно отключен")"""
 
 if __name__ == "__main__":
     # Запускаем основную функцию
