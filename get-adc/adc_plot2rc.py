@@ -110,28 +110,45 @@ def plot_sampling_period_hist(measurement_times):
     sampling_periods = measurement_times
     
     print(f"Всего измерений: {len(sampling_periods)}")
-    print(f"Времена измерений: {[f'{t:.3f}' for t in sampling_periods[:10]]}...")
+    print(f"Времена измерений (первые 10): {[f'{t:.3f}' for t in sampling_periods[:10]]}")
     
     # Создаем окно для отображения графика
     plt.figure(figsize=(10, 6))
     
+    # Создаем бины с периодом 0.1 секунды
+    bins = np.arange(0, max(sampling_periods) + 0.1, 0.1)
+    
     # Размещаем гистограмму периодов измерений
-    plt.hist(sampling_periods, bins=20, color='lightblue', edgecolor='black', alpha=0.7)
+    n, bins, patches = plt.hist(sampling_periods, bins=bins, color='lightblue', 
+                               edgecolor='black', alpha=0.7, rwidth=0.8)
     
     # Задаем название графика и осей
     plt.title('Распределение продолжительности измерений АЦП')
     plt.xlabel('Продолжительность измерения, с')
     plt.ylabel('Количество измерений')
     
-    # Задаем границы по оси X
-    plt.xlim(0, 0.06)
-    
     # Включаем отображение сетки
-    plt.grid(True, linestyle='--', alpha=0.7)
+    plt.grid(True, linestyle='--', alpha=0.7, axis='y')
+    
+    # Добавляем подписи к столбцам
+    for i in range(len(n)):
+        if n[i] > 0:
+            plt.text(bins[i] + 0.05, n[i] + 0.1, str(int(n[i])), 
+                    ha='center', va='bottom', fontsize=9)
     
     # Добавляем статистику
     mean_time = np.mean(sampling_periods)
-    plt.axvline(mean_time, color='red', linestyle='--', label=f'Среднее: {mean_time:.3f} с')
+    plt.axvline(mean_time, color='red', linestyle='--', linewidth=2, 
+               label=f'Среднее: {mean_time:.3f} с')
+    
+    # Добавляем информацию о бинах
+    plt.text(0.02, 0.95, f'Бины: по 0.1 с', 
+            transform=plt.gca().transAxes, fontsize=10,
+            bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.8))
+    plt.text(0.02, 0.85, f'Всего измерений: {len(sampling_periods)}', 
+            transform=plt.gca().transAxes, fontsize=10,
+            bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.8))
+    
     plt.legend()
     
     print(f"\n=== СТАТИСТИКА ПРОДОЛЖИТЕЛЬНОСТИ ИЗМЕРЕНИЙ ===")
@@ -139,6 +156,10 @@ def plot_sampling_period_hist(measurement_times):
     print(f"Минимальное время: {min(sampling_periods):.3f} с")
     print(f"Максимальное время: {max(sampling_periods):.3f} с")
     print(f"Стандартное отклонение: {np.std(sampling_periods):.3f} с")
+    print(f"\nРаспределение по бинам:")
+    for i in range(len(n)):
+        if n[i] > 0:
+            print(f"  {bins[i]:.1f}-{bins[i+1]:.1f} с: {int(n[i])} измерений")
     
     plt.tight_layout()
     plt.show()
