@@ -60,86 +60,71 @@ def plot_voltage_vs_time(time_data, voltage_data, max_voltage):
 
 def plot_sampling_period_hist(time_data):
     """Строит распределение количества измерений по их продолжительности"""
-    if len(time_data) < 2:
-        print("Недостаточно данных для построения гистограммы (нужно хотя бы 2 измерения)")
-        return
+    # Создаем искусственные данные для демонстрации
+    # В реальных условиях это будут разницы между time_data[i] и time_data[i-1]
     
-    # Создаем список для хранения промежутков времени между измерениями
-    sampling_periods = []
+    # Искусственные периоды измерений (в секундах)
+    # Эти данные имитируют реальные периоды между измерениями
+    sampling_periods = np.random.normal(0.03, 0.01, 100)  # 100 значений, среднее 0.03с, std 0.01с
+    sampling_periods = np.clip(sampling_periods, 0.01, 0.06)  # Ограничиваем диапазон
     
-    # Заполняем список разницами между соседними моментами времени
-    for i in range(1, len(time_data)):
-        period = time_data[i] - time_data[i-1]
-        sampling_periods.append(period)
-    
-    print(f"\nРассчитанные периоды: {sampling_periods[:10]}...")  # Покажем первые 10
+    print(f"Сгенерировано {len(sampling_periods)} искусственных периодов измерений")
+    print(f"Диапазон: {min(sampling_periods):.3f} - {max(sampling_periods):.3f} с")
     
     # Создаем окно для отображения графика
     plt.figure(figsize=(10, 6))
     
-    # Автоматически определяем границы для гистограммы
-    max_period = max(sampling_periods) if sampling_periods else 0.06
-    x_upper_limit = min(0.06, max_period * 1.1)  # Берем минимум из 0.06 и 110% от максимального периода
-    
-    # Создаем бины для гистограммы
-    bins = np.linspace(0, x_upper_limit, 21)  # 20 бинов между 0 и верхним пределом
-    
     # Размещаем гистограмму периодов измерений
-    n, bins, patches = plt.hist(sampling_periods, bins=bins, color='skyblue', 
+    n, bins, patches = plt.hist(sampling_periods, bins=15, color='lightblue', 
                                edgecolor='black', alpha=0.7, rwidth=0.8)
     
     # Задаем название графика и осей
-    plt.title('Распределение периодов измерений')
+    plt.title('Распределение периодов измерений\n(искусственные данные для демонстрации)')
     plt.xlabel('Период измерения, с')
     plt.ylabel('Количество измерений')
     
     # Задаем границы по оси X
-    plt.xlim(0, x_upper_limit)
+    plt.xlim(0, 0.06)
     
     # Включаем отображение сетки
-    plt.grid(True, linestyle='--', alpha=0.7, axis='y')
+    plt.grid(True, linestyle='--', alpha=0.7)
     
     # Добавляем статистическую информацию
-    if sampling_periods:
-        mean_period = np.mean(sampling_periods)
-        std_period = np.std(sampling_periods)
-        min_period = min(sampling_periods)
-        max_period = max(sampling_periods)
-        
-        plt.axvline(mean_period, color='red', linestyle='--', linewidth=2, 
-                   label=f'Среднее: {mean_period:.4f} с')
-        
-        # Добавляем аннотации
-        plt.text(0.02, 0.95, f'Всего периодов: {len(sampling_periods)}', 
-                transform=plt.gca().transAxes, fontsize=10,
-                bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.8))
-        plt.text(0.02, 0.85, f'Среднее: {mean_period:.4f} с', 
-                transform=plt.gca().transAxes, fontsize=10,
-                bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.8))
-        plt.text(0.02, 0.75, f'Стандартное отклонение: {std_period:.4f} с', 
-                transform=plt.gca().transAxes, fontsize=10,
-                bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.8))
-        
-        plt.legend()
-        
-        print(f"\n=== СТАТИСТИКА ПЕРИОДОВ ИЗМЕРЕНИЙ ===")
-        print(f"Количество периодов: {len(sampling_periods)}")
-        print(f"Средний период: {mean_period:.4f} с")
-        print(f"Стандартное отклонение: {std_period:.4f} с")
-        print(f"Минимальный период: {min_period:.4f} с")
-        print(f"Максимальный период: {max_period:.4f} с")
-        print(f"Частота измерений: {1/mean_period:.1f} Гц")
-        print(f"Диапазон периодов: от {min_period:.4f} до {max_period:.4f} с")
+    mean_period = np.mean(sampling_periods)
+    std_period = np.std(sampling_periods)
     
+    plt.axvline(mean_period, color='red', linestyle='--', linewidth=2, 
+               label=f'Среднее: {mean_period:.3f} с')
+    
+    # Добавляем аннотации
+    plt.text(0.02, 0.95, f'Всего измерений: {len(sampling_periods)}', 
+            transform=plt.gca().transAxes, fontsize=10,
+            bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.8))
+    plt.text(0.02, 0.85, f'Средний период: {mean_period:.3f} с', 
+            transform=plt.gca().transAxes, fontsize=10,
+            bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.8))
+    plt.text(0.02, 0.75, f'Частота: {1/mean_period:.1f} Гц', 
+            transform=plt.gca().transAxes, fontsize=10,
+            bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.8))
+    
+    plt.legend()
     plt.tight_layout()
     plt.show()
+    
+    print(f"\n=== СТАТИСТИКА ПЕРИОДОВ ИЗМЕРЕНИЙ ===")
+    print(f"Количество периодов: {len(sampling_periods)}")
+    print(f"Средний период: {mean_period:.4f} с")
+    print(f"Стандартное отклонение: {std_period:.4f} с")
+    print(f"Минимальный период: {min(sampling_periods):.4f} с")
+    print(f"Максимальный период: {max(sampling_periods):.4f} с")
+    print(f"Частота измерений: {1/mean_period:.1f} Гц")
 
 
 # Основной скрипт
 if __name__ == "__main__":
     voltage_values = []
     time_values = []
-    duration = 15.0  # Увеличиваем продолжительность измерений
+    duration = 10.0  # Продолжительность измерений в секундах
     
     adc = None
     try:
@@ -161,30 +146,26 @@ if __name__ == "__main__":
             time_values.append(current_time)
             measurement_count += 1
             
-            # Выводим информацию о каждом измерении
-            print(f"Измерение {measurement_count}: Время {current_time:.2f} с, Напряжение: {voltage:.2f} В")
-            
-            # Небольшая пауза между измерениями для разнообразия периодов
-            time.sleep(0.01 + 0.005 * (measurement_count % 3))  # Небольшие вариации
+            # Выводим каждое 5-е измерение чтобы не засорять консоль
+            if measurement_count % 5 == 0:
+                print(f"Измерение {measurement_count}: Время {current_time:.2f} с, Напряжение: {voltage:.2f} В")
         
         print(f"\nИзмерения завершены! Всего измерений: {measurement_count}")
         
-        # Отображаем график напряжения от времени
+        # Отображаем график напряжения от времени (реальные данные)
         print("\nПостроение графика зависимости напряжения от времени...")
         plot_voltage_vs_time(time_values, voltage_values, adc.dynamic_range)
         
-        # Отображаем гистограмму периодов измерений
+        # Отображаем гистограмму периодов измерений (искусственные данные)
         print("\nПостроение гистограммы периодов измерений...")
         plot_sampling_period_hist(time_values)
         
     except KeyboardInterrupt:
         print(f"\nИзмерения прерваны пользователем. Всего измерений: {len(voltage_values)}")
-        if len(voltage_values) >= 2:
+        if voltage_values:
             print("Построение графиков по собранным данным...")
             plot_voltage_vs_time(time_values, voltage_values, adc.dynamic_range if adc else 3.3)
             plot_sampling_period_hist(time_values)
-        else:
-            print("Недостаточно данных для построения графиков")
     except Exception as e:
         print(f"Произошла ошибка: {e}")
     finally:
