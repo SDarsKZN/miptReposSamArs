@@ -57,7 +57,7 @@ if __name__ == "__main__":
     try:
         # Создаем объект ADC с измеренным динамическим диапазоном
         # ЗАМЕНИТЕ 3.3 на реально измеренное значение напряжения вашего ЦАП!
-        adc = R2R_ADC(dynamic_range=3.2, verbose=False)
+        adc = R2R_ADC(dynamic_range=3.1, verbose=False)
         
         while True:
             voltage = adc.get_sc_voltage()
